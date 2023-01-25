@@ -1,0 +1,61 @@
+html, body {
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+body {
+    align-items: center;
+    background-image: url("background.webp");
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+
+.keys {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.key {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    border: 3px solid black;
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    margin: .75rem;
+    padding: 1rem;
+    text-shadow: 0 0 5px black;
+    /* transition sirve para cuando se hacen cambios en propiedades, haya un proceso de transición. Si se implementa con all,
+       siginifica que todas las propiedades que cambien, van a tener el transition. También se puede indicar si se quiere solo una propiedad en específico
+       ej: transition: color 1s. En este caso solo va aplicar el efecto de transition para cuando cambien la propiedad color
+    */
+    transition: all 0.08s; 
+    width: 75px;
+}
+
+.playing {
+    /* transform sirve para aumentar/disminuir la escala de tamaño, rotar o mover el elemento.
+       La propiedad scale sirve para aumentar o disminuir la escala de tamaño. Esta escala de hace en el plano 2D(x, y). 
+       Se puede pasar solo 1 parametro para aumentar ambos la misma proporción, o se puede pasar los dos parámetros para indicar cuando cambia en x y cuando en y
+    */
+    transform: scale(1.1);
+    border-color: #33FFF0;
+    text-shadow: 0 0 10px #33FFF0;
+}
+
+kbd {
+    color: white;
+    font-size: 2rem;
+}
+
+.sound {
+    color: #33FFF0
+}
