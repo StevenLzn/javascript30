@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="clock">
+        <div class="clock-face">
+            <div class="hand hour-hand"></div>
+            <div class="hand min-hand"></div>
+            <div class="hand second-hand"></div>
+        </div>
+    </div>
+
+    <script>
+
+        const hourHand = document.querySelector(".hour-hand");
+        const minHand = document.querySelector(".min-hand");
+        const secondHand = document.querySelector(".second-hand");
+
+        function setDate(){
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            const second = now.getSeconds();
+
+            // Calculo para transformar la unidad de tiempo a grados(degrees)
+            const hourDegrees = ((hour / 12) * 360 ) + 90;
+            // Se suman las horas * 360 para que los grados sigan aumentando y no se reinicien a 360, porque eso causa un bug haciendo que las manecillas salten
+            const minuteDegrees = ((minute / 60) * 360 ) + 90 + hour * 360;
+            // Se suman los minutos * 360 para que los grados sigan aumentando y no se reinicien a 360, porque eso causa un bug haciendo que las manecillas salten
+            // Cuando llega a 360 y se reinicia, se causa un salto por el transition
+            const secondDegrees = ((second/60) * 360) + 90 + minute * 360; // fix para que no hagan saltos las manecillas
+
+            // Se asigna el nuevo valor en grados a la propiedad rotate del transform
+            hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+            minHand.style.transform = `rotate(${minuteDegrees}deg)`;
+            secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+        }
+
+        setInterval(setDate, 1000);
+        setDate();
+    </script>
+</body>
+</html>

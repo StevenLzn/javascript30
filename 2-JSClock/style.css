@@ -1,0 +1,52 @@
+html, body {
+    background-color: #79554880;
+    margin: 0;
+}
+
+body {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    min-height: 100vh;
+}
+
+.clock {   
+    border: 15px solid white;
+    border-radius: 50%;
+    height: 25rem;
+    padding: 2rem;
+    position: relative;
+    margin: 5px auto;
+    width: 25rem;  
+}
+
+.clock-face {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: translate(-3px);
+}
+
+.hand {
+    background-color: black;
+    height: 6px;
+    position: absolute;
+    transform: rotate(90deg); /* Se rotan para que inicien arriba, en el número 12 del reloj */
+    transform-origin: 100%; /* Establece el punto de origen desde donde se quiere transformar el elemento, puede recibir 2 valores x, y. O puede recibir solo 1. Por defecto el valor es 50% */
+    transition: all .1s;
+    transition-timing-function: cubic-bezier(0.01, 1.54, 0, 2.84); /* Permite establecer la curva de duración para que la velocidad de la transición pueda variar a lo largo de su duración*/
+    top: 50%;
+    width: 50%;
+}
+
+.second-hand {
+    background-color: red;
+}
+
+.hour-hand {
+    background-color: black;
+}
+
+.min-hand {
+    background-color: #585858;
+}
