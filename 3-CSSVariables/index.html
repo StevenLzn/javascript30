@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Playing with CSS Variables and JS</title>
+</head>
+<body>
+    <h2>Update CSS Variables with <span class="h1">JS</span></h2>
+    <div class="controls">
+        <label for="spacing">Spacing:</label>
+        <input type="range" name="spacing", min="10" max="200", value="10" data-sizing="px">
+        <label for="blur">Blur:</label>
+        <input type="range" name="blur", min="0" max="25", value="10" data-sizing="px">
+        <label for="base">Base color:</label>
+        <input type="color" name="base" value="#FF3D3D">
+    </div>
+    <img src="image.jpeg" alt="image">
+
+    <script>
+        // Se obtienen todos los inputs dentro de la clase .controls
+        const inputs = document.querySelectorAll('.controls input');
+
+        function handleUpdate(){
+            // dataset contiene todos los data del selector.
+            // por ejemplo el input tiene data-sizing, entonces el dataset tiene una propiedad que se llama sizing con el valor correspondiente
+            // Si hubiese uno que se llamara data-name, entonces habrían dos propiedades en el dataset, una que sería el sizing y otra que sería el name. 
+            // Cada uno con sus respectivos valores
+            const suffix = this.dataset.sizing || '';
+
+            // documentElement devuelve el elemento raíz del documento. Algo así como el :root del css
+            // El this.name trae el name del elemento. En este caso trae spacing o blur o base. Dependiendo de quien invoque el evento
+            // this.value es el valor actual del input
+            document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+        }
+
+
+        // Se le agregan dos eventos a los inputs. El change y mousemove. 
+        // Cada que cambie o haya un movimiento en el input, se va a disparar el handleUpdate
+        inputs.forEach(input => input.addEventListener('change', handleUpdate));
+        inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+/* :root representa al elemento html, es como si se pusiera el selector 'html'. 
+   Una de las diferencias es que con :root se selecciona el elemento raíz del árbol que representa el documento.
+   Es útil para declarar variables globales
+   :root tiene un nivel de especificidad mayor que el selector 'html'. Esto quiere decir que tiene prioridad al aplicar los estilos
+   Si con el selector html aplicamos un background blue, y en el root aplicamos uno red, entonces toma el red y ignora el blue
+   Esto es porque :root tiene un nivel mayor de prioridad que el selector html.
+   Estas variables se pueden sobreescribir en otro archivo de estilos o en otra clase. Eso haría que ignore el del root y tome el valor local asignado
+*/
+:root {
+    --base: #FF3D3D;
+    --spacing: 10px;
+    --blur: 10px
+}
+
+html, body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+body {
+    align-items: center;
+    background-color: #34394e;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+img {
+    background: var(--base);
+    filter: blur(var(--blur));
+    margin-top: 2rem;
+    padding: var(--spacing); /* con var() se usan variables declaradas en el :root */
+    width: 375px;
+}
+
+.h1 {
+    color: var(--base);
+}
