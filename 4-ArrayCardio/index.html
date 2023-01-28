@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Array Cardio Day 1</title>
+  </head>
+  <body>
+    <script>
+        const inventors = [
+            { first: "Albert", last: "Einstein", year: 1879, passed: 1955 }, //17
+            { first: "Isaac", last: "Newton", year: 1643, passed: 1727 }, //19
+            { first: "Galileo", last: "Galilei", year: 1564, passed: 1642 }, //15
+            { first: "Marie", last: "Curie", year: 1867, passed: 1934 },
+            { first: "Johannes", last: "Kepler", year: 1571, passed: 1630 },
+            { first: "Nicolaus", last: "Copernicus", year: 1473, passed: 1543 },
+            { first: "Max", last: "Planck", year: 1858, passed: 1947 },
+            { first: "Katherine", last: "Blodgett", year: 1898, passed: 1979 },
+            { first: "Ada", last: "Lovelace", year: 1815, passed: 1852 },
+            { first: "Sarah E.", last: "Goode", year: 1855, passed: 1905 },
+            { first: "Lise", last: "Meitner", year: 1878, passed: 1968 },
+            { first: "Hanna", last: "Hammarström", year: 1829, passed: 1909 },
+        ];
+
+        const people = [
+            "Bernhard, Sandra", "Bethea, Erin", "Becker, Carl", "Bentsen, Lloyd",
+            "Beckett, Samuel", "Blake, William", "Berger, Ric", "Beddoes, Mick",
+            "Beethoven, Ludwig", "Belloc, Hilaire", "Begin, Menachem", "Bellow, Saul",
+            "Benchley, Robert", "Blair, Robert", "Benenson, Peter", "Benjamin, Walter",
+            "Berlin, Irving", "Benn, Tony", "Benson, Leana", "Bent, Silas",
+            "Berle, Milton", "Berry, Halle", "Biko, Steve", "Beck, Glenn",
+            "Bergman, Ingmar", "Black, Elk", "Berio, Luciano", "Berne, Eric", "Berra, Yogi",
+            "Berry, Wendell", "Bevan, Aneurin", "Ben-Gurion, David", "Bevel, Ken", "Biden, Joseph",
+            "Bennington, Chester", "Bierce, Ambrose", "Billings, Josh", "Birrell, Augustine",
+            "Blair, Tony", "Beecher, Henry", "Biondo, Frank",
+        ];
+
+        // Array.prototype.filter
+        // 1. Filtrar el array de inventors, para obtener los nacidos en los 1500's
+        // Recorre cada elemento del array y si cumple con la condición, lo agrega al array final(fifteen)
+        const fifteen = inventors.filter( inventor => inventor.year >= 1500 && inventor.year <= 1599 );
+        console.table(fifteen);
+
+        // Array.prototype.map()
+        // 2. Generar un array con el nombre y apellido del inventor
+        // Recorre los elementos del array y devuelve otro array del mismo tamaño, pero con los elementos transformados
+        // Es como una maquina, se introduce algo para ser procesado y al final tener ese producto
+        const fullNames = inventors.map( inventor => `${inventor.first} ${inventor.last}`);
+        console.log(fullNames);
+
+        // Array.prototype.sort()
+        // 3. Ordenar los inventores por año de nacimiento, más viejo a más jóven
+        // Recorre los elementos del array para compararlos
+        // Recibe dos elementos del array para comparar
+        // inventorA - inventorB para orden ascendente y inventorB - inventorA para orden descendente. Sirve para números
+        // Para strings es necesario comparar con > y retornar 1 o -1 para ordenarlo
+        const orderer = inventors.sort((inventorA, inventorB) => inventorA.year - inventorB.year) 
+        console.table(orderer);
+
+        // Array.prototype.reduce()
+        // 4. Cuantos años vivieron todos los inventores
+        let initialValue = 0;
+        const totalYears = inventors.reduce( // Itera el array para devolver un único valor
+            // Recibe como parametros primero el acumulador, que va llevando el consolidado del resultado final
+            // Y de segundo el currentValue, que tiene el elemento actual que se está iterando
+            (total, inventor) => total + (inventor.passed - inventor.year), 
+            initialValue // valor inicial
+        )
+        console.log(totalYears);
+
+        // 5. Ordenar los inventores por años vividos
+        // Otra forma de usar el sort con condicional. Es más útil para strings, pero se puede aplicar con números también
+        // Para números se puede aplicar la forma usada en el punto 3
+        // Se compara si un valor es mayor que otro y se devuelve -1 o 1.
+        // si es > 0 entonces 'a' va después que 'b', si es < 0 entonces 'a' es antes que 'b', si es == 0 entonces se mantiene el mismo orden
+        // Si se quiere ordenar en orden ascendente, entonces el 1 va con el valor verdadero del ternatio. 
+        // Si se quiere descendente, el 1 va con el valor falso del ternario. En este ejemplo el 1 está en el valor falso, por ende, se organizará de forma descendente
+        const oldest = inventors.sort((inventorA, inventorB) => {
+            const lastGuy = inventorA.passed - inventorA.year;
+            const nextGuy = inventorB.passed - inventorB.year;
+            return lastGuy > nextGuy ? -1 : 1;
+        })
+        console.table(oldest);
+
+        // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name -- PENDIENTE
+        // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+
+        // Este ejemplo se debe copiar en la consola del link de wikipedia para que funcione
+        /*const category = document.querySelector('.mw-category');
+        // Podemos obtener elementos de otro elemento obtenido con el mismo método de querySelector()
+        // Se usa el spread para convertirlo en array. porque el querySelectorAll nos devuelve un tipo NodeList
+        // Con NodeList no tenemos disponible el método map, por eso es necesario este spread
+        const links = [...category.querySelectorAll('a')]; 
+
+        const de = links
+                    .map( link => link.textContent ) // Se pueden conectar métodos. Cada método va recibiendo lo que devuelve el método anterior.
+                    .filter( streetName => streetName.includes('de') ) // En este caso filter recibe el array que da como resultado el método map y los filtra solo los que tengan la cadena 'de' dentro del nombre
+        */
+
+
+        // 7. sort Exercise -- PENDIENTE
+        // Sort the people alphabetically by last name
+
+        // Como el 1 va en el valor verdadero del ternario, entonces significa que se va a ordenar de forma ascendente
+        const alpha = people.sort((lastPerson, nextPerson) =>{
+            const [aLast, aFirst] = lastPerson.split(', '); // Se divide el string por el separador ', ' y se desestructura para obtener los dos elementos resultantes
+            const [bLast, bFirst] = nextPerson.split(', ');
+
+            // Ya teniendo el apellido, podemos compararlos para ordenarlos
+            return aLast > bLast ? 1 : -1;
+        })
+
+        console.log(alpha);
+
+        
+        // 8. Reduce Exercise
+        // Sum up the instances of each of these
+        const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+        const initialArray = {};
+        // Por cada iteración se agrega o se suma 1 a la propiedad correspondiente
+        // Por ejemplo 'car' pasa a ser una propiedad y va sumando 1 por cada elemento 'car' que haya
+        const transportation = data.reduce((obj, element) => {
+            // Computed properties: Buscamos con el string la propiedad dentro del objeto
+            // Por ejemplo si el elemento es un string 'car', entonces se busca en el objeto una propiedad que se llame 'car'
+            // Si no existe la agrega en 0 para luego sumarle 1, si ya existe entonces simplemente le suma 1, también con computed properties
+            if(!obj[element]){
+                obj[element] = 0;
+            }
+                
+            obj[element]++;
+
+            // Retornamos el objeto con el valor actualizado. Al final del reduce este objeto tendrá el conteo de los vehículos
+            // El conteo de 'car', 'truck', etc
+            return obj;
+        }, initialArray)
+        console.log(transportation);
+    </script>
+  </body>
+</html>
