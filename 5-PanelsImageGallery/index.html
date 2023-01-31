@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+    <title>Flex Panels Image Gallery</title>
+  </head>
+  <body>
+    <div class="panels">
+      <div class="panel panel1">
+        <p>Hey</p>
+        <p>Let's</p>
+        <p>Dance</p>
+      </div>
+      <div class="panel panel2">
+        <p>Give</p>
+        <p>Take</p>
+        <p>Receive</p>
+      </div>
+      <div class="panel panel3">
+        <p>Experience</p>
+        <p>It</p>
+        <p>Today</p>
+      </div>
+      <div class="panel panel4">
+        <p>Give</p>
+        <p>All</p>
+        <p>You can</p>
+      </div>
+      <div class="panel panel5">
+        <p>Life</p>
+        <p>In</p>
+        <p>Motion</p>
+      </div>
+    </div>
+
+    <script>
+        const panels = document.querySelectorAll('.panel');
+
+        function toggleOpen() {
+            // el toggle sirve para poner o quitar una clase, si el elemento ya tiene la clase entonces la quita
+            // pero si el elemento no tiene la clase entonces la pone
+            this.classList.toggle('open');
+        }
+
+        function toggleActive(e){
+            // Solo se va a ejecutar el toggle cuando haya terminado la transición del flex, es decir, cuando se expande el panel
+            // Se usa includes porque en safari es solo flex, mientras que en otro navegadores es flex-grow. Entonces, con incluir la palabra 'flex', sirve para ambos casos
+            if(e.propertyName.includes('flex')) {
+                this.classList.toggle('open-active');
+            }
+        }
+
+        panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+        panels.forEach(panel => panel.addEventListener('transitionend', toggleActive)); // Se dispara cada que una transición termina
+    </script>
+  </body>
+</html>
