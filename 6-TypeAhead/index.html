@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Type Ahead</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form class="search-form">
+      <input type="text" class="search" placeholder="City or State" />
+      <ul class="suggestions">
+        <li>Filter for a city</li>
+        <li>or a state</li>
+      </ul>
+    </form>
+    <script>
+      const endpoint =
+        "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
+
+      const cities = [];
+
+      fetch(endpoint) // API fetch es para hacer peticiones http, es un API nativa de javascript. Retorna una promesa
+        .then((blob) => blob.json()) // La respuesta de la petición viene en un blob, que dispone el método .json() para obtener la data. También retorna una promesa
+        .then((data) => cities.push(...data)); // Con el spread hacemos push a todos los objetos de la data y cada elemento queda en la base del array
+
+        function findMatches(wordToMatch, cities){
+            return cities.filter( place => {
+                // expresión regular para encontrar coincidencias en el texto
+                // El tag i sirve para indicar que no es sensible a las mayúsculas y minúsculas
+                // El tag g sirve para indicar que es global y verifica todo el string. Comprueba todas las coincidencias posibles del string
+                const regex = new RegExp(wordToMatch, 'gi');
+
+                // Se comprueba si la ciudad o el estado tienen alguna coincidencia con el texto buscado. Se evalúa con la expresión regular, llamando al método match()
+                return place.city.match(regex) || place.state.match(regex);
+            })
+        }
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function displayMatches(){
+            // this hace referencia al elemento que lo está llamando, en este caso es el input. Por eso podemos acceder al valor del input
+            const matchArray = findMatches(this.value, cities);
+            const html = matchArray.map( place => {
+                const regex = new RegExp(this.value, 'gi');
+                // Resalta la palabra buscada entre los resultados
+                // El replace sirve para cambiar un valor dentro de un string por otro
+                // Como primer parametro puede recibir un string o una expresión regular
+                // Y como segundo parámetro va el nuevo valor que se asignará a las coincidencias del primer parámetro
+                // Por ejemplo si el usuario escribe 'new', lo que pasará es que en el string se va a reemplazar esa palabra, por una con el diseño que lo hace resaltar
+                const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+                const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+                return `
+                    <li>
+                        <span class="name">${cityName}, ${stateName}</span>
+                        <span class="population">${numberWithCommas(place.population)}</span>
+                    </li>
+                `
+            }).join(""); // Como el map devuelve un array, entonces los unimos con join()
+
+            // innerHTML sirve para obtener o establecer un contenido HTML
+            // En este caso estamos estableciendo un nuevo HTML a lo que está dentro de la clase .suggestions
+            suggestions.innerHTML = html;
+        }
+
+        const searchInput = document.querySelector('.search');
+        const suggestions = document.querySelector('.suggestions');
+
+        searchInput.addEventListener('keyup', displayMatches); // keyup es un evento para capturar cuando el usuario deja de presionar una tecla
+
+    </script>
+  </body>
+</html>
