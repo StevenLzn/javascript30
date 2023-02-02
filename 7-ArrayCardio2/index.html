@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Array Cardio 2</title>
+  <body>
+    <p><em>Psst: have a look at the JavaScript Console</em> 💁</p>
+    <script>
+      // ## Array Cardio Day 2
+
+      const people = [
+        { name: "Wes", year: 1988 },
+        { name: "Kait", year: 1986 },
+        { name: "Irv", year: 1970 },
+        { name: "Lux", year: 2015 },
+      ];
+
+      const comments = [
+        { text: "Love this!", id: 523423 },
+        { text: "Super good", id: 823423 },
+        { text: "You are the best", id: 2039842 },
+        { text: "Ramen is my fav food ever", id: 123523 },
+        { text: "Nice Nice Nice!", id: 542328 },
+      ];
+
+      // Some and Every Checks
+      // Array.prototype.some() // is at least one person 19 or older?
+      const actualYear = new Date().getFullYear();
+      // some() sirve para comproba si por lo menos algún elemento del array cumple con la condición dada
+      // Si por lo menos 1 cumple, entonces retorna true, si ninguno cumple, entonces retorna false
+      const isAdult = people.some(p => (actualYear - p.year) >= 19);
+      console.log({isAdult});
+
+
+      // Array.prototype.every() // is everyone 19 or older?
+      // every() sirve para comprobar si todos los elementos del array cumplen con una condición dada
+      // Si todos cumplen con la condición retorna true, si por lo menos 1 elemento no cumple con la condición retorna false
+      const allAdults = people.every(p => (actualYear - p.year) >= 19);
+      console.log({allAdults});
+
+
+      // Array.prototype.find()
+      // Find is like filter, but instead returns just the one you are looking for
+      // find the comment with the ID of 823423
+      // find() retorna el primer elemento que coincida con la condición.
+      // No lo devuelve como array, sino el valor del elemento como tal
+      // En este caso devuelve el objeto que cumpla con id === 823423. El valor que retorna es { text: "Super good", id: 823423 }
+      const comment = comments.find( comment => comment.id === 823423);
+      console.log(comment);
+
+
+      // Array.prototype.findIndex()
+      // Find the comment with this ID
+      // delete the comment with the ID of 823423
+      const elementIndex = comments.findIndex( comment => comment.id === 823423);
+      // Con splice borramos un elemento en un índice en específico
+      // El primer parámetro es el índice a borrar y el segundo es la cantidad de elementos. En este caso solo borra 1 elemento
+      // comments.splice(elementIndex, 1);
+      // console.table(comments);
+
+      // Otra manera de eliminar un elemento de un array, generando un nuevo array y dejando el original intacto
+      const newComments = [
+        ...comments.slice(0, elementIndex), // Se divide el array desde la primera posición hasta el índice encontrado. Esto retorna un array y por eso hay que hacer un spread
+        ...comments.slice(elementIndex + 1), // Luego se divide el array desde el índice + 1, hasta el final. Si no se pasa el segundo parámetro, significa que va hasta el último elemento
+      ];
+      console.table(newComments);
+    </script>
+  </body>
+</html>
