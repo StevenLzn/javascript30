@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Fun with HTML5 Canvas</title>
+</head>
+<body>
+    <canvas id="draw" width="800" height="800"></canvas>
+
+    <script>
+
+        // El dibujo no se realiza directamente en el elemento canvas del HTML,
+        // sino qie se realiza en algo llamado el context. El context puede ser 2D, aunque también puede ser 3D
+        const canvas = document.querySelector('#draw');
+        const context = canvas.getContext('2d'); // Se obtiene el contexto 2D
+
+        // Establecemos el tamaño del canvas, obteniendo el ancho y alto de la pantalla
+        // Se sobre-escriben los valores del width 800 y height 800 que se pusieron en el html
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        context.strokeStyle = '#BADA55'; // strokeStyle asigna el color de la línea
+        context.lineJoin = 'round'; // lineJoin asigna el estilo de la unión entre líneas. 'round' hace que las uniones sean de forma redondeada
+        context.lineCap = 'round'; // lineCap asigna el estilo de la punta de la línea. En este caso 'round' significa que la punta es redondeada
+        context.lineWidth = 100; // lineWidth asigna el ancho de la línea en pixeles
+
+        // globalCompositeOperation establece el tipo de composición al dibujar nuevas formas.
+        // 'multiply' hace que los pixeles de la capa superior se multipliquen con el pixel correspondiente de la capa inferior. Hay muchas operaciones que se pueden aplicar
+        // Da como resultado una imagen más oscura
+        context.globalCompositeOperation = 'multiply'; 
+
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        // hsl -> https://mothereffinghsl.com/  h: tono(saturación), s: saturación(%), l: luminosidad(% o alpha)
+        // hsl es más intuitivo para el manejo de colores
+        // hue tiene valores de 0 a 360, cada uno representa un tono diferente
+        let hue = 0;
+        let direction = true;
+
+        function draw(e){
+            if(!isDrawing) return; // La función solo se ejecuta cuando se está presionando clic izquierdo
+            context.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+            context.beginPath(); // Método para iniciar una nueva ruta o reiniciar la ruta actual.
+            // start from
+            context.moveTo(lastX, lastY); // moveTo mueve el origen al cardinal indicado como parámetro. Mueve la ruta a ese punto, sin dibujar ninguna línea
+            // lineTo crea un nuevo punto y crea una línea desde el último punto especificado, hasta este nuevo punto
+            // e.offsetX y e.offsetY son parte del evento del mousemove, nos dan las coordenadas de la posición del mouse
+            // go to
+            context.lineTo(e.offsetX, e.offsetY); 
+            context.stroke(); // renderiza los trazos realizados con las diferentes instrucciones definidas con el moveTo() y lineTo()
+
+            // establecemos las últimas coordenadas que recibimos del evento del movimiento del mouse
+            // Asginamos los valores con destructuring
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+            hue++; // Incrementamos el valor de hue, lo que hace que cambie de color
+
+            if(hue >= 360) hue = 0; // 360 es el máximo valor de hue, por eso cuando llega a ese valor se reinicia
+
+            if(context.lineWidth >= 100 || context.lineWidth <= 1){
+                direction = !direction;
+            }
+
+            direction ? context.lineWidth++ : context.lineWidth--;
+        }
+
+        canvas.addEventListener('mousemove', draw);
+        // Mientras esté presionando el clic izquierdo, el isDrawing estará en true
+        // mousedown es el evento cuando se presiona clic izquierdo
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            // Tan pronto como la persona presione el clic, se asginan las coordenadas
+            // Estos valores se reciben del evento
+            // Esto nos permite que cada que se comience a dibujar lo haga realmente desde donde está ubicado el puntero del mouse
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }); 
+        // Cuando se deje de presionar el clic izquierdo, el isDrawing estará en false
+        // mousedown es el evento cuando se deja de presionar clic izquierdo
+        canvas.addEventListener('mouseup', () => isDrawing = false); 
+        // El evento mouseout se dispara cuando el mouse se sale del elemento
+        // Cuando el mouse abandone el canva, entonces isDrawing estará en false
+        canvas.addEventListener('mouseout', () => isDrawing = false)
+
+    </script>
+</body>
+</html>
