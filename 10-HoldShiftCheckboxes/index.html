@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hold Shift to Check Multiple Checkboxes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <!--
+   The following is a common layout you would see in an email client.
+   When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
+  -->
+  <div class="inbox">
+    <div class="item">
+      <input type="checkbox">
+      <p>This is an inbox layout.</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Check one item</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Hold down your Shift key</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Check a lower item</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Everything in between should also be set to checked</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Try to do it without any libraries</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Just regular JavaScript</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Good Luck!</p>
+    </div>
+    <div class="item">
+      <input type="checkbox">
+      <p>Don't forget to tweet your result!</p>
+    </div>
+  </div>
+
+<script>
+    const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+    let lastChecked;
+    
+    function handleCheckboxClick(e){
+        // shiftKey viene en el evento y nos permite saber si el shift está presionado
+        // checked es para saber si el elemento pasó valor chequeado
+        let inBetween = false;
+        if(e.shiftKey && this.checked){
+            // Se recorre cada checkbox
+            checkboxes.forEach(checkbox => {
+                // this es el elemento que disparó el evento clic
+                // lastChecked es el elemento que disparó el evento antes que el actual.
+                // Entonces, entre esos dos elementos se maneja la variable isBetween
+                // isBetween arranca en false, y cuando encuentra por primera vez a this o a lastChecked pasa a true
+                // Cuando se encuentra la segunda vez con this o con lastChecked, entonces la variable pasa a false
+                // Esto hace que todos los elementos intermedios se chequeen
+                if( checkbox === this || checkbox === lastChecked){
+                    inBetween = !inBetween;
+                }
+
+                if(inBetween){
+                    checkbox.checked = true;
+                }
+            })
+        }
+        lastChecked = this; // this es el elemento desde donde se disparó el evento clic
+    }
+
+
+    checkboxes.forEach( checkbox => checkbox.addEventListener('click', handleCheckboxClick));
+</script>
+</body>
+</html>
