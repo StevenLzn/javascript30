@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Reference VS Copy</title>
+</head>
+<body>
+
+  <script>
+    // start with strings, numbers and booleans
+    // Con los strings, números y booleanos, al actualizar la variable original, no se actualiza la variable que recibió el valor de esta
+    // La original cambia de valor, pero la otra mantiene el valor original
+    // Estos valores no se pasan pro referencia, cuando se trata de strings, numbers y booleans
+    //let age = 100;
+    //let age2 = age;
+    //console.log(age, age2);
+    //age = 200;
+    //console.log(age, age2);
+
+    //let name = 'Steven';
+    //let name2 = name;
+    //console.log(name, name2);
+    //name = 'lz';
+    //console.log(name, name2);
+
+    // Let's say we have an array
+    const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+
+    // and we want to make a copy of it.
+    const team = players; // A diferencia de los strings y numbers, los arrays si pasan por referencia
+
+    console.log(players, team);
+
+    // Al pasar el valor por referencia, al modificar uno, se modifica el otro
+    // En este caso, team recibe la referencia del array players
+    // Cuando se cambia el valor del array team en la posición 3
+    // Lo que se está haciendo es modificar la referencia del array
+    // Por lo que tan en team, como en players tendran el mismo nuevo valor en la posición 3
+    team[3] = 'Steven';
+
+    // You might think we can just do something like this:
+
+    // however what happens when we update that array?
+
+    // now here is the problem!
+
+    // oh no - we have edited the original array too!
+
+    // Why? It's because that is an array reference, not an array copy. They both point to the same array!
+
+    // So, how do we fix this? We take a copy instead!
+    // Para hacer una copia del array, se puede usar el método slice()
+    // el slice() retorna una nueva referencia de array
+    // Esto quiere decir que team2 y players tienen una referencia distinta
+    // Y al modificar uno, no se modifica el otro
+    const team2 = players.slice();
+
+    // one way
+
+    // or create a new array and concat the old one in
+    const team3 = [].concat(players); // Otra forma de crea una copia de un array, y que sea una referencia distinta
+
+    // or use the new ES6 Spread
+    // Estas dos formas son las más utilizadas
+    const team4 = [...players]; // Otra forma de crea una copia de un array, y que sea una referencia distinta
+    const team5 = Array.from(players); // Otra forma de crea una copia de un array, y que sea una referencia distinta
+    // now when we update it, the original one isn't changed
+
+    // The same thing goes for objects, let's say we have a person object
+
+    // with Objects
+    const person = {
+      name: 'Steven Lozano',
+      age: 80
+    };
+
+    // and think we make a copy:
+    //const captain = person; // Al igual que el array, los objetos también se pasan por referencia
+    // person y captain apuntan a la misma referencia
+    // Si se modifica uno, también se aplica para el otro
+    //captain.number = 99;
+
+    // how do we take a copy instead?
+    // Se crea una copia del objeto, Esta referencia es distinta a la original
+    // Una forma de agregar propiedades sin afectar el objeto de referencia es con Object.assign()
+    // Copia las propiedades del objeto original y le agrega nuevas como tercer parámetro
+    const cap2 = Object.assign({}, person, { number: 99, age: 12 });
+    console.log(cap2);
+
+    // We will hopefully soon see the object ...spread
+    const cap3 = {...person}; // Otra forma de crear una copia de un objeto. Esta referencia es distinta a la original
+
+    // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+
+    const steven = {
+        name: 'Steven',
+        age: 100,
+        social: {
+            twitter: '@steven',
+            facebook: 'steven.com'
+        }
+    }
+
+    console.log(steven);
+    // Crea una copia pero de la base del objeto
+    // Los objetos aninados siguen manteniendo referencia
+    // Si se cambia un objeto anidado, cambia la referencia
+    // Es decir, si alguien cambia social.twitter, el cambio se hace en la referencia y cambia en todos los objetos que la tienen
+    const dev = Object.assign({}, steven);
+
+    // Así se crea una copia, incluyendo los objetos anidados
+    // Con esta forma, también crea una referencia aparte de los objetos anidados
+    // El objeto se transforma en string y por eso pierde la referencia, porque los strings no mantienen la referencia
+    // Y luego se parsea de nuevo a objeto, teniendo así una nueva referencia del objeto
+    const dev2 = JSON.parse(JSON.stringify(steven))
+  </script>
+
+</body>
+</html>
